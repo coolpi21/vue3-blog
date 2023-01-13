@@ -10,12 +10,13 @@
 <script setup lang="ts">
 import { IconPark } from '@icon-park/vue-next/es/all'
 
-const props = defineProps({
-  fill: String,
-  size: String,
-  theme: String,
-  type: String
-})
+interface IconParkProps {
+  fill: string
+  size: string
+  theme: string
+  type: string
+}
+const props = defineProps<IconParkProps>()
 </script>
 
 <style scoped></style>

@@ -1,7 +1,7 @@
 <template>
   <aside
     class="fixed top-0 right-0 z-50 h-screen w-96 bg-white px-2.5 shadow-lg transition-transform duration-300"
-    :class="[asideIsActive ? 'translate-x-0' : 'translate-x-96']"
+    :class="[active ? 'translate-x-0' : 'translate-x-96']"
   >
     <div class="flex items-start justify-between px-6 pt-8 pb-6">
       <div>
@@ -37,6 +37,19 @@
   </aside>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const props = defineProps({
+  active: {
+    type: Boolean,
+    default: false
+  }
+})
+const { active } = toRefs(props)
+const emits = defineEmits(['update:active'])
+
+const handleHideShowUserAside = () => {
+  emits('update:active', false)
+}
+</script>
 
 <style scoped></style>

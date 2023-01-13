@@ -36,5 +36,5 @@ module.exports = {
       'blue-gray-50/50': '#eceff180'
     })
   },
-  plugins: [require('flowbite/plugin')]
+  plugins: [require('daisyui')]
 }
