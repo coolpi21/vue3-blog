@@ -23,6 +23,7 @@ module.exports = {
       '1/2': '50vh',
       screen: '100vh'
     },
+    minWidth: {},
     borderWidths: {
       default: '1px',
       0: '0',

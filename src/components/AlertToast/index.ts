@@ -5,7 +5,12 @@ export interface ToastProps {
   alertType: string
 }
 
-export const defaultOpt = {
+interface DefaultOptions {
+  duration: number
+  instanceTop: number
+}
+
+export const defaultOpt: DefaultOptions = {
   duration: 1500,
   instanceTop: 40
 }

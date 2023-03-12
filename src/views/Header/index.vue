@@ -1,5 +1,5 @@
 <template>
-  <div class="header flex flex-row justify-between items-center">
+  <header class="header flex flex-row justify-between items-center">
     <h1 class="text-6xl font-bold text-slate-700">C.AI's Blog</h1>
     <div class="header-menu flex gap-4 prose prose-zinc">
       <router-link
@@ -9,7 +9,7 @@
         >{{ item.name }}
       </router-link>
     </div>
-  </div>
+  </header>
 </template>
 
 <script setup lang="ts">

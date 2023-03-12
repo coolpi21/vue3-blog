@@ -1,6 +1,6 @@
 <template>
   <div
-    class="alert shadow-lg w-36 text-white message fixed left-1/2 -translate-x-1/2 z-50"
+    class="alert shadow-lg w-72 justify-center text-white message fixed left-1/2 -translate-x-1/2 z-50"
     :class="{
       'alert-error': props.alertType === 'error',
       'alert-success': props.alertType === 'success'

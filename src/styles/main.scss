@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-gray-100;
+@layer base {
+  @font-face {
+    font-family: 'Neue Machina';
+    font-weight: 700;
+    font-style: normal;
+    src: url('@/assets/fonts/NeueMachina-Bold.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Anicons Subset';
+    font-weight: normal;
+    font-style: normal;
+    src: url('@/assets/fonts/AniconsGX.subset.woff2') format('woff2');
+    font-display: block;
+  }
+
+  @font-face {
+    font-family: 'Smiley Sans';
+    font-weight: normal;
+    font-style: normal;
+    src: url('@/assets/fonts/SmileySans-Oblique.otf.woff2') format('woff2');
+    font-display: block;
+  }
+
+  body {
+    @apply bg-gray-100;
+  }
 }

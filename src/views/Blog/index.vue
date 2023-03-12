@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="article-list__content">
     <!--    文章内容-->
     <div
       v-for="(item, index) in articleList"
       :key="`article-${index}`"
-      class="flex my-2 gap-2 relative"
+      class="flex items-center h-8 my-2 gap-2 relative"
     >
-      <div class="bg-fuchsia-800 w-2" v-if="item.isHighLight"></div>
+      <div class="bg-fuchsia-800 w-2 h-full" v-if="item.isHighLight"></div>
       <div
         class="title font-bold text-slate-500 text-2xl hover:decoration-sky-700 hover:underline-offset-8 hover:underline hover:decoration-dashed hover:cursor-pointer"
         @click="handleArticleJump"
@@ -50,4 +50,8 @@ const handleArticleJump = () => {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.article-list__content {
+  font-family: 'Smiley Sans';
+}
+</style>

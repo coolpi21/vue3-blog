@@ -22,7 +22,12 @@
     <!--    编辑个人简介-->
     <section>
       <h1 class="text-slate-800 font-bold text-2xl my-4">编辑个人简介</h1>
-      <Editor :personal-profile="personalProfile" ref="editorRef"></Editor>
+      <v-md-editor
+        v-model="personalProfile"
+        height="400px"
+        :disabled-menus="[]"
+        @upload-image="handleUploadImage"
+      ></v-md-editor>
     </section>
 
     <!--    更新按钮区域-->
@@ -49,11 +54,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { getUserProfile, updateUserProfile } from '@/api/profile'
+import { getUploadSign, UploadSign } from '@/api/upload'
+import Upload from '@/utils/upload'
 
-const { proxy } = getCurrentInstance() as any
+const { proxy: _this } = getCurrentInstance() as any
 const imgSrc = ref<string>('')
 
 const editorRef = ref()
+const uploadFile = ref<File>()
 const uploadImageRef = ref()
 // 个人简介
 const personalProfile = ref<string>('')
@@ -61,9 +69,9 @@ const personalProfile = ref<string>('')
 const isLoading = ref<boolean>(false)
 
 const requestProfile = async () => {
-  const userProfile = await getUserProfile(4)
-  personalProfile.value = userProfile.profile
-  imgSrc.value = userProfile.avatar
+  const { data } = await getUserProfile(1)
+  personalProfile.value = data.profile
+  imgSrc.value = data.avatar
 }
 
 onMounted(() => {
@@ -74,35 +82,70 @@ onMounted(() => {
 const handleUpdateProfile = async () => {
   if (isLoading.value) return
   isLoading.value = true
-  await updateUserProfile(4, {
+  await updateUserProfile(1, {
     avatar: imgSrc.value,
-    profile: editorRef.value.contentHTML
+    profile: personalProfile.value
   })
   isLoading.value = false
-  proxy.$aaa({
+  _this.$toast({
     alertType: 'success',
     alertText: '更新成功'
   })
 }
 
+// 上传编辑器图片
+const handleUploadImage = async (
+  event: EventTarget,
+  insertImage: (config: {}) => {},
+  files: File[]
+) => {
+  console.log('event', event, insertImage)
+  const { url } = await onUploadProgress(files[0])
+  insertImage({
+    url: url,
+    desc: `${files[0].name}`,
+    width: 'auto',
+    height: 'auto'
+  })
+}
+
 // 上传头像
-const uploadImage = (e: Event) => {
+const uploadImage = async (e: Event) => {
   const target = e.target as HTMLInputElement
 
   if (!target.files) throw new Error('上传头像出错')
   if (target.files) {
     const file = target.files['0']
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onload = result => {
-      if (!result.target) throw new Error('获取头像出错')
-      if (result.target) {
-        imgSrc.value = result.target.result as string
-        // 清空头像文件
-        uploadImageRef && uploadImageRef.value.reset()
-      }
-    }
+    const { url } = await onUploadProgress(file)
+
+    imgSrc.value = url
   }
+}
+
+// 上传
+const onUploadProgress = async (file: File) => {
+  try {
+    const { data: sign } = await getUploadSign()
+
+    return onUploadFile(sign, file)
+  } catch (e) {
+    console.log('获取上传签名失败', e)
+  }
+}
+
+const onUploadFile = (sign: UploadSign, file: File) => {
+  const result = new Upload({
+    stsToken: sign.stsToken,
+    accessKeyId: sign.accessKeyId,
+    accessKeySecret: sign.accessKeySecret
+  }).put(file.name, file)
+
+  _this.$toast({
+    alertType: 'success',
+    alertText: '上传头像成功'
+  })
+
+  return result
 }
 </script>
 
